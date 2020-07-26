@@ -51,3 +51,9 @@ var songs = new Songs([
 ]);
 
 songs.add(new Song({ title: "Song 4" }));
+
+var firstSong = songs.at(0); // gets model at specified index
+
+var songWithIdC1 = songs.get("c1"); // gets model based on cid
+
+songs.remove(firstSong); // removes model when used with get/at

@@ -54,7 +54,7 @@ songs.add(new Song({ title: "Song 4" }));
 
 var firstSong = songs.at(0); // gets model at specified index
 
-var songWithIdC1 = songs.get("c1"); // gets model based on cid
+var songWithIdC1 = songs.get("c1"); // gets model based on cid or attr
 
 songs.remove(firstSong); // removes model when used with get/at
 
@@ -68,24 +68,26 @@ console.log(lastSongPopped);
 
 // SEARCH METHODS //
 
-var hiphopSongs = songs.where({ genre: "Hiphop" });
+var hiphopSongs = songs.where({ genre: "Hiphop" }); // returns array of models with matching attr
 
-var firstHiphopSong = songs.findWhere({ genre: "Hiphop" });
+var firstHiphopSong = songs.findWhere({ genre: "Hiphop" }); // returns first instance of matching attr
 
 console.log("Hiphop songs: ", hiphopSongs);
 
 console.log("First hiphop song: ", firstHiphopSong);
 
-var filteredSongs = songs.where({ genre: "Hiphop", title: "Song 2" });
+var filteredSongs = songs.where({ genre: "Hiphop", title: "Song 2" }); // filter with multiple attrs
 
 console.log("Filtered songs", filteredSongs);
 
 var topDownloads = songs.filter(function (song) {
+  // filter with js filter with get in callback
   return song.get("downloads") > 50;
 });
 
 console.log("Top Downloads: ", topDownloads);
 
 songs.each(function (song) {
+  // each works just like js forEach()
   console.log(song);
 });

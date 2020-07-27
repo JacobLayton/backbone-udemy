@@ -45,9 +45,9 @@ var Songs = Backbone.Collection.extend({
 });
 
 var songs = new Songs([
-  new Song({ title: "Song 1" }),
-  new Song({ title: "Song 2" }),
-  new Song({ title: "Song 3" }),
+  new Song({ title: "Song 1", downloads: 40 }),
+  new Song({ title: "Song 2", downloads: 90 }),
+  new Song({ title: "Song 3", downloads: 150 }),
 ]);
 
 songs.add(new Song({ title: "Song 4" }));
@@ -57,3 +57,35 @@ var firstSong = songs.at(0); // gets model at specified index
 var songWithIdC1 = songs.get("c1"); // gets model based on cid
 
 songs.remove(firstSong); // removes model when used with get/at
+
+songs.add(new Song({ title: "Song 1 NEW" }), { at: 0 }); // specifies which index to add the song
+
+songs.push(new Song({ title: "Song 4 NEW" })); // Works just like JS array method
+
+var lastSongPopped = songs.pop(); // Works just like JS array method
+
+console.log(lastSongPopped);
+
+// SEARCH METHODS //
+
+var hiphopSongs = songs.where({ genre: "Hiphop" });
+
+var firstHiphopSong = songs.findWhere({ genre: "Hiphop" });
+
+console.log("Hiphop songs: ", hiphopSongs);
+
+console.log("First hiphop song: ", firstHiphopSong);
+
+var filteredSongs = songs.where({ genre: "Hiphop", title: "Song 2" });
+
+console.log("Filtered songs", filteredSongs);
+
+var topDownloads = songs.filter(function (song) {
+  return song.get("downloads") > 50;
+});
+
+console.log("Top Downloads: ", topDownloads);
+
+songs.each(function (song) {
+  console.log(song);
+});

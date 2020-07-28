@@ -1,3 +1,4 @@
+// =============== Models =================//
 // Initial Model
 var Song = Backbone.Model.extend({
   initialize: function () {
@@ -91,3 +92,16 @@ songs.each(function (song) {
   // each works just like js forEach()
   console.log(song);
 });
+
+// ===================== VIEWS ====================== //
+
+var SongView = Backbone.View.extend({
+  render: function () {
+    this.$el.html("Hello World");
+
+    return this;
+  },
+});
+
+var songView = new SongView({ el: "#container" });
+songView.render();

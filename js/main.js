@@ -96,12 +96,25 @@ songs.each(function (song) {
 // ===================== VIEWS ====================== //
 
 var SongView = Backbone.View.extend({
-  render: function () {
-    this.$el.html("Hello World");
+  tagName: "span", // Changes element type
 
-    return this;
+  className: "song", // adds classname
+
+  id: "1234", // Adds Id
+
+  attributes: {
+    "data-genre": "Jazz", // adds html5 data attributes
+  },
+
+  render: function () {
+    this.$el.html("Hello World"); // this.$el is jquery object that conatins the views dom element
+    // .html is a jquery method to display "hello world" on the view
+    return this; // returns a reference to the view, this helps chain method calls
   },
 });
 
-var songView = new SongView({ el: "#container" });
-songView.render();
+var songView = new SongView(); // When instantiating the view, specify which dom element it's attached to
+// songView.render();  // The render method is chained into the line below
+
+$("#container").html(songView.render().$el); // jQuery slector to get the container element
+// then using the html method to insert the view's dom element inside the conatiner

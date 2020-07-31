@@ -124,8 +124,25 @@ var SongView = Backbone.View.extend({
   // model view
   tagName: "li",
 
+  events: {
+    click: "onClick",
+    "click .bookmark": "onClickBookmark",
+  },
+
+  onClick: function () {
+    console.log("Listen Clicked");
+  },
+
+  onClickBookmark: function (e) {
+    e.stopPropagation();
+    console.log("Bookmark Clicked");
+  },
+
   render: function () {
-    this.$el.html(this.model.get("title"));
+    this.$el.html(
+      this.model.get("title") +
+        "<button>Listen</button> <button class='bookmark'>Bookmark</button>"
+    );
 
     return this;
   },

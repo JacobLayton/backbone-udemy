@@ -11,6 +11,7 @@ var Song = Backbone.Model.extend({
   },
   defaults: {
     genre: "Hiphop",
+    listeners: 0,
   },
   playSong: function () {
     console.log("Song is now playing...");
@@ -122,6 +123,10 @@ songs.each(function (song) {
 
 var SongView = Backbone.View.extend({
   // model view
+  initialize: function () {
+    this.model.on("change", this.render, this);
+  },
+
   tagName: "li",
 
   events: {
@@ -134,13 +139,15 @@ var SongView = Backbone.View.extend({
   },
 
   onClickBookmark: function (e) {
-    e.stopPropagation();
+    e.stopPropagation(); // stops the generic click handler from firing
     console.log("Bookmark Clicked");
   },
 
   render: function () {
     this.$el.html(
       this.model.get("title") +
+        " - Listeners: " +
+        this.model.get("listeners") +
         "<button>Listen</button> <button class='bookmark'>Bookmark</button>"
     );
 

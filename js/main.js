@@ -198,3 +198,26 @@ songs.each(function (song) {
   // setting each song in collection to 2 listeners
   song.set("listeners", 2);
 });
+
+// ================ Templates ===================//
+
+var TemplateSongView = Backbone.View.extend({
+  tagName: "span",
+
+  render: function () {
+    // this.$el.html(this.model.get("title")); // this is the regular view syntax
+    var template = _.template($("#songTemplate").html()); // using selector on #templatesong, then html() to give it markup, then the _.template method compiles the html into the template
+    var html = template(this.model.toJSON()); //underscore epects json obj, so we convert it and pass it to the template function created in previous line
+    this.$el.html(html); // we then pass that html markup to this jquery function
+
+    return this;
+  },
+});
+
+var tempSong = new Song({ title: "Shadows of the sun", plays: 1100 });
+
+var templateSongView = new TemplateSongView({
+  el: "#templateSong", // Note that here we select the html element, and above we select the script id
+  model: tempSong,
+});
+templateSongView.render();

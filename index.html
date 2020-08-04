@@ -16,9 +16,21 @@
   <body>
     <div id="song"></div>
     <ul id="songs"></ul>
+    <div id="templateSong"></div>
     <script src="js/lib/jquery-min.js"></script>
     <script src="js/lib/underscore-min.js"></script>
     <script src="js/lib/backbone-min.js"></script>
+
+    <!-- The below script is the template for a view in main.js, -->
+
+    <script id="songTemplate" type="text/html">
+      <%= title %>  <!--This renders the title dynamically, with "=" it will be rendered to the page-->
+      <button>Listen</button>
+      <% if (plays > 1000) { %> <!-- Without the "=" for logic and conditional statements-->
+        <span class="popular">Popular</span>
+        <% } %>
+    </script>
+
     <script src="js/main.js"></script>
   </body>
 </html>

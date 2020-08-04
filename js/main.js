@@ -48,12 +48,12 @@ var Songs = Backbone.Collection.extend({
 });
 
 var songs = new Songs([
-  new Song({ title: "Song 1", downloads: 40 }),
-  new Song({ title: "Song 2", downloads: 90 }),
-  new Song({ title: "Song 3", downloads: 150 }),
+  new Song({ id: 1, title: "Song 1", downloads: 40 }),
+  new Song({ id: 2, title: "Song 2", downloads: 90 }),
+  new Song({ id: 3, title: "Song 3", downloads: 150 }),
 ]);
 
-songs.add(new Song({ title: "Song 4" }));
+songs.add(new Song({ id: 4, title: "Song 4" }));
 
 var firstSong = songs.at(0); // gets model at specified index
 
@@ -61,9 +61,9 @@ var songWithIdC1 = songs.get("c1"); // gets model based on cid or attr
 
 songs.remove(firstSong); // removes model when used with get/at
 
-songs.add(new Song({ title: "Song 1 NEW" }), { at: 0 }); // specifies which index to add the song
+songs.add(new Song({ id: 1, title: "Song 1 NEW" }), { at: 0 }); // specifies which index to add the song
 
-songs.push(new Song({ title: "Song 4 NEW" })); // Works just like JS array method
+songs.push(new Song({ id: 5, title: "Song 4 NEW" })); // Works just like JS array method
 
 var lastSongPopped = songs.pop(); // Works just like JS array method
 
@@ -124,7 +124,7 @@ songs.each(function (song) {
 var SongView = Backbone.View.extend({
   // model view
   initialize: function () {
-    this.model.on("change", this.render, this);
+    this.model.on("change", this.render, this); // updates view anytime change is triggered
   },
 
   tagName: "li",
@@ -145,30 +145,56 @@ var SongView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(
-      this.model.get("title") +
+      this.model.get("title") + // passing song title to the view's render function
         " - Listeners: " +
         this.model.get("listeners") +
         "<button>Listen</button> <button class='bookmark'>Bookmark</button>"
     );
+    this.$el.attr("id", this.model.id);
 
     return this;
   },
 });
 
-var songView = new SongView({ el: "#song", model: song });
+var songView = new SongView({ el: "#song", model: song }); // passing model to view in its constructor
 songView.render();
 
 var SongsView = Backbone.View.extend({
   // Collection view
+  tagName: "ul",
+
+  initialize: function () {
+    this.model.on("add", this.onSongAdded, this); // updates view when add event triggered
+    this.model.on("remove", this.onSongRemoved, this); // updates view when song is removed
+  },
+
+  onSongAdded: function (song) {
+    var newSong = new SongView({ model: song }); // custom method for appending new model to collection and updating view
+
+    this.$el.append(newSong.render().$el);
+  },
+
+  onSongRemoved: function (song) {
+    // custom method for removing song from collection
+    // this.$el.find("li#" + song.id).remove();
+    this.$("li#" + song.id).remove(); // shorthand for the previous line of code
+  },
+
   render: function () {
     var self = this; // context of this cahnges inside the callback function, so this line fixes the error
 
     this.model.each(function (song) {
+      // collection data requires "each" method to iterate over data
       var colSongView = new SongView({ model: song });
-      self.$el.append(colSongView.render().$el);
+      self.$el.append(colSongView.render().$el); // Note we are using the self variable here
     });
   },
 });
 
 var songsView = new SongsView({ el: "#songs", model: songs });
 songsView.render();
+
+songs.each(function (song) {
+  // setting each song in collection to 2 listeners
+  song.set("listeners", 2);
+});

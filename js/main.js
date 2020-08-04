@@ -221,3 +221,22 @@ var templateSongView = new TemplateSongView({
   model: tempSong,
 });
 templateSongView.render();
+
+// ==================== Events ==========================//
+
+var person = {
+  name: "Jacob",
+
+  walk: function () {
+    this.trigger("walking"); // trigger method is used to publish events
+  },
+};
+
+_.extend(person, Backbone.Events);
+
+person.on("walking", function () {
+  // on method subscribes to events
+  console.log("person is walking");
+});
+
+person.walk();
